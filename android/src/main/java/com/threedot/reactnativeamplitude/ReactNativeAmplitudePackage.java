@@ -13,22 +13,20 @@ import java.util.*;
 
 public class ReactNativeAmplitudePackage implements ReactPackage {
 
-    private Activity mActivity = null;
     private Application mApplication = null;
 
-    public ReactNativeAmplitudePackage(Activity activity, Application application) {
-        mActivity = activity;
+    public ReactNativeAmplitudePackage(Application application) {
         mApplication = application;
     }
-  
+
     @Override
     public List<NativeModule> createNativeModules(
             ReactApplicationContext reactContext) {
         List<NativeModule> modules = new ArrayList<>();
-        modules.add(new AmplitudeAndroidModule(reactContext, mActivity, mApplication));
+        modules.add(new AmplitudeAndroidModule(reactContext,this.mApplication));
         return modules;
     }
-    
+
     @Override
     public List<Class<? extends JavaScriptModule>> createJSModules() {
         return Collections.emptyList();

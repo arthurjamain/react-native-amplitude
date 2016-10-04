@@ -1,7 +1,9 @@
 # react-native-amplitude
+
 Simple React Native wrapper for Amplitude (Android) tracking
 
-## Installation ##
+## Installation
+
 1. `npm install react-native-amplitude --save`
 
 2. Install Amplitude Android SDK [more info here](https://github.com/amplitude/Amplitude-Android)
@@ -29,46 +31,49 @@ dependencies {
 
 4. Register React Package
 
+Edit android/app/src/main/java/{NAME OF APP}/MainApplication.java and add the
+import:
+
+```java
+import com.threedot.reactnativeamplitude.ReactNativeAmplitudePackage;
+```
+
+and the line
+
+```java
+new ReactNativeAmplitudePackage(getApplication())
+```
+
+In below location:
+
 ```java
 ...
-import com.threedot.reactnativeamplitude.ReactNativeAmplitudePackage; // import
+import com.threedot.reactnativeamplitude.ReactNativeAmplitudePackage;
 
-public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
-
-    private ReactInstanceManager mReactInstanceManager;
-    private ReactRootView mReactRootView;
-
-    @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        mReactRootView = new ReactRootView(this);
-
-        mReactInstanceManager = ReactInstanceManager.builder()
-                .setApplication(getApplication())
-                .setBundleAssetName("index.android.bundle")
-                .setJSMainModuleName("index.android")
-                .addPackage(new MainReactPackage())
-
-                // register package here
-                .addPackage(new ReactNativeAmplitudePackage(this,getApplication()))
-
-                .setUseDeveloperSupport(BuildConfig.DEBUG)
-                .setInitialLifecycleState(LifecycleState.RESUMED)
-                .build();
-        mReactRootView.startReactApplication(mReactInstanceManager, "AwesomeProject", null);
-        setContentView(mReactRootView);
-    }
+public class MainApplication extends Application implements ReactApplication {
 ...
-
+    @Override
+    protected List<ReactPackage> getPackages() {
+      return Arrays.<ReactPackage>asList(
+...
+          new ReactNativeAmplitudePackage(getApplication())
+...
+      );
+    }
+  };
+...
 ```
 
-## Usage ##
-```
+## Usage
+
+```javascript
+
 //Require the module
-var Amplitude = require('react-native-amplitude');
+import Amplitude from 'react-native-amplitude';
 
 //Init Mixpanel SDK with your project token
 Amplitude.initialize(YOUR_PROJECT_TOKEN);
 
 //Log an event
 Amplitude.logEvent('appStart');
+```

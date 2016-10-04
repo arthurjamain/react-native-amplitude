@@ -24,59 +24,59 @@ public class AmplitudeAndroidModule extends ReactContextBaseJavaModule {
 
   private Activity mActivity = null;
   private Application mApplication = null;
-  
-  public AmplitudeAndroidModule(ReactApplicationContext reactContext, Activity mActivity, Application mApplication) {
+
+  public AmplitudeAndroidModule(ReactApplicationContext reactContext, Application mApplication) {
     super(reactContext);
-    this.mActivity = mActivity;
+    this.mActivity = getCurrentActivity();
     this.mApplication = mApplication;
   }
-  
+
   @Override
   public String getName() {
     return "AmplitudeAndroid";
   }
-  
+
   @ReactMethod
   public void initialize(String apiKey) {
-    Amplitude.getInstance().initialize(this.mActivity, apiKey).enableForegroundTracking(this.mApplication);
+    Amplitude.getInstance().initialize(getCurrentActivity(), apiKey).enableForegroundTracking(this.mApplication);
   }
-  
+
   @ReactMethod
   public void logEvent(String identifier) {
     Amplitude.getInstance().logEvent(identifier);
   }
-  
+
   @ReactMethod
   public void logEventWithProps(String identifier, ReadableMap properties) {
-    
+
     try {
       JSONObject jProperties = convertReadableToJsonObject(properties);
       Amplitude.getInstance().logEvent(identifier, jProperties);
     } catch (JSONException e) {
       return;
     }
-    
+
   }
-  
+
   @ReactMethod
   public void trackSessionEvents(boolean bool) {
     Amplitude.getInstance().trackSessionEvents(bool);
   }
-  
+
   @ReactMethod
   public void setUserId(String id) {
     Amplitude.getInstance().setUserId(id);
   }
-  
+
   @ReactMethod
   public void logRevenue(String productIdentifier, int quantity, double amount) {
     Amplitude.getInstance().logRevenue(productIdentifier, quantity, amount);
   }
-  
+
   public static JSONObject convertReadableToJsonObject(ReadableMap map) throws JSONException{
     JSONObject jsonObj = new JSONObject();
     ReadableMapKeySetIterator it = map.keySetIterator();
-      
+
     while (it.hasNextKey()) {
       String key = it.nextKey();
       ReadableType type = map.getType(key);
@@ -100,5 +100,5 @@ public class AmplitudeAndroidModule extends ReactContextBaseJavaModule {
     }
     return jsonObj;
  }
-     
+
 }
