@@ -69,6 +69,18 @@ public class AmplitudeAndroidModule extends ReactContextBaseJavaModule {
   }
 
   @ReactMethod
+  public void setUserProperties(ReadableMap properties) {
+
+    try {
+      JSONObject jProperties = convertReadableToJsonObject(properties);
+      Amplitude.getInstance().setUserProperties(jProperties);
+    } catch (JSONException e) {
+      return;
+    }
+    
+  }
+
+  @ReactMethod
   public void logRevenue(String productIdentifier, int quantity, double amount) {
     Amplitude.getInstance().logRevenue(productIdentifier, quantity, amount);
   }
